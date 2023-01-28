@@ -1,6 +1,8 @@
 
 @extends('backEnd.layouts.master')
 @section('title','Product Add')
+@php($addons = \App\ProductAddon::all())
+@php($sizes = \App\Size::all())
 @section('main_content')
 <section class="content">
   <div class="container-fluid">
@@ -144,22 +146,10 @@
                             <strong>{{ $errors->first('image') }}</strong>
                           </span>
                           @endif
-                        </div>
-                      <!-- /.form-group -->
-                  <!-- </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                          <label>Product Quantity <span>*</span></label>
-                          <input type="number" name="proQuantity" class="form-control{{ $errors->has('proQuantity') ? ' is-invalid' : '' }}" value="{{ old('proQuantity') }}" min="1">
+                    </div>
+                  </div>
 
-                          @if ($errors->has('proQuantity'))
-                          <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('proQuantity') }}</strong>
-                          </span>
-                          @endif
-                        </div>
-                    </div> -->
-                  <!-- /.form-group -->
+
                   <div class="col-sm-4">
                         <div class="form-group">
                           <label>Product Unit <span>(Optional)</span></label>
@@ -171,53 +161,86 @@
                           </span>
                           @endif
                         </div>
-                    </div>
-                  <!-- /.form-group
+                  </div>
+
+
+
                   <div class="col-sm-4">
-                        <div class="form-group">
-                        <label for="title">Product size (Optional)</label>
-                            <select name="proSize[]" class="form-control select2{{ $errors->has('proSize') ? ' is-invalid' : '' }}" multiple="multiple">
-                              @foreach($productSize as $key=>$value)
-                              <option value="{{$value->id}}">{{$value->sizeName}}</option>
-                              @endforeach
-                          </select>
-                            @if ($errors->has('proSize'))
-                              <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('proSize') }}</strong>
-                              </span>
-                              @endif
-                        </div>
-                      </div>
+                      <div class="form-group">
+                        <label>Product Code (Optional)</label>
+                        <input type="text" name="proCode" class="form-control{{ $errors->has('proCode') ? ' is-invalid' : '' }}" value="{{ old('proCode') }}">
 
-
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                        <label for="title">Product color (Optional)</label>
-                            <select name="proColor[]" class="form-control select2{{ $errors->has('proColor') ? ' is-invalid' : '' }}" multiple="multiple">
-                              @foreach($productColors as $key=>$value)
-                              <option value="{{$value->id}}">{{$value->colorName}}</option>
-                              @endforeach
-                          </select>
-                            @if ($errors->has('proColor'))
-                              <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('proColor') }}</strong>
-                              </span>
-                              @endif
-                        </div>
+                        @if ($errors->has('proCode'))
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $errors->first('proCode') }}</strong>
+                        </span>
+                        @endif
                       </div>
-                         form group end -->
+                  </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                      <label>Addon (Optional)</label>
+                      {{-- <input type="text" name="addon" class="form-control{{ $errors->has('addon') ? ' is-invalid' : '' }}" value="{{ old('addon') }}"> --}}
+                      <select name="addon[]" class="select2 form-control" multiple>
+                        @foreach ($addons as $addon)
+                            <option value="{{ $addon->id }}">{{ $addon->name }}</option>
+                        @endforeach
+
+                      </select>
+
+                      @if ($errors->has('addon'))
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('addon') }}</strong>
+                      </span>
+                      @endif
+                    </div>
+                </div>
+
+                <div class="col-sm-8">
+                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                              <label>Product Code (Optional)</label>
-                              <input type="text" name="proCode" class="form-control{{ $errors->has('proCode') ? ' is-invalid' : '' }}" value="{{ old('proCode') }}">
+                              <label>Size <span></span></label>
+                              <select class="form-control" name="size[]">
+                                @foreach ($sizes as $size)
+                                    <option value="{{ $size->id }}">{{ $size->sizeName }}</option>
+                                @endforeach
 
-                              @if ($errors->has('proCode'))
+                              </select>
+
+                              @if ($errors->has('unit'))
                               <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('proCode') }}</strong>
+                                <strong>{{ $errors->first('unit') }}</strong>
                               </span>
                               @endif
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="text" name="size_price[]" class="form-control{{ $errors->has('proCode') ? ' is-invalid' : '' }}" value="{{ old('proCode') }}">
+
+                                @if ($errors->has('proCode'))
+                                <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('proCode') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group" style="margin-top: 30px;">
+
+                                <button type="button" class="btn btn-info add"><i class="fa fa-plus"></i></button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-8 addRow">
+
+                </div>
                       <!-- /.form-group -->
                   <div class="col-sm-12">
                       <div class="form-group">
@@ -380,4 +403,74 @@
   <!--container-fluid-->
   </section>
   <!-- /.content -->
+@endsection
+
+
+@section('js')
+
+<script>
+
+    $(document).ready(function(){
+        $('.add').click(function(e){
+            e.preventDefault();
+
+            $('.addRow').append(`
+
+                <div class="row">
+                    <div class="col-sm-4">
+                            <div class="form-group">
+                              <label>Size <span></span></label>
+                              <select class="form-control" name="size[]">
+                                @foreach ($sizes as $size)
+                                    <option value="{{ $size->id }}">{{ $size->sizeName }}</option>
+                                @endforeach
+
+                              </select>
+
+                              @if ($errors->has('unit'))
+                              <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('unit') }}</strong>
+                              </span>
+                              @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Size Price</label>
+                                <input type="text" name="size_price[]" class="form-control{{ $errors->has('proCode') ? ' is-invalid' : '' }}" value="{{ old('proCode') }}">
+
+                                @if ($errors->has('proCode'))
+                                <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('proCode') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group" style="margin-top: 30px;">
+                                <a href="javascript:void(0);" class="remCF btn btn-info"><i class="fa fa-minus"></i></a>
+
+                            </div>
+                        </div>
+                </div>
+            `);
+
+        });
+
+
+
+
+    });
+
+    $(document).on('click', '.remCF', function(){
+        $('.addRow .row:last').remove();
+    })
+
+
+
+
+
+
+</script>
+
 @endsection

@@ -16,6 +16,8 @@ use App\Size;
 use App\Color;
 use App\Productcolor;
 use App\Productsize;
+use App\SizePriceProduct;
+use App\ProductAddonQuantity;
 use DB;
 use Alert;
 class ProductController extends Controller
@@ -41,6 +43,9 @@ class ProductController extends Controller
     	return view('backEnd.product.add',compact('categories','productSize','productColors'));
     }
      public function store(Request $request){
+
+
+        //return $request->all();
         $this->validate($request,[
             'proCategory'			=>	'required',
             'proName'				=>	'required',
@@ -88,13 +93,40 @@ class ProductController extends Controller
             $name =  time().'-'.$image->getClientOriginalName();
             $uploadpath = 'public/uploads/product/';
             $image->move($uploadpath, $name);
-            $imageUrl = $uploadpath.$name;  
+            $imageUrl = $uploadpath.$name;
 
              $proimage= new Productimage();
              $proimage->product_id = $productId;
              $proimage->image=$imageUrl;
-             $proimage->save(); 
+             $proimage->save();
         }
+
+        if ($request->has('addon')) {
+
+            for ($a = 0; $a < count($request->addon); $a++) {
+                if ($request->addon[$a]) {
+                    $productAddon = new ProductAddonQuantity();
+                    $productAddon->product_id = $store_data->id;
+                    $productAddon->addon_id = $request->addon[$a];
+                    $productAddon->save();
+                }
+            }
+        }
+
+        if ($request->has('size')) {
+
+            for ($a = 0; $a < count($request->size); $a++) {
+                if ($request->size[$a] && $request->size_price[$a]) {
+                    $sizePrice = new SizePriceProduct();
+                    $sizePrice->product_id = $store_data->id;
+                    $sizePrice->size_id = $request->size[$a];
+                    $sizePrice->size_price = $request->size_price[$a];
+                    $sizePrice->save();
+                }
+            }
+        }
+
+
         $store_data->proSizes()->attach($request->proSize);
         $store_data->proColors()->attach($request->proColor);
 
@@ -171,7 +203,7 @@ class ProductController extends Controller
         $update_data->feature              =     $request->feature;
         $update_data->bestsell             =     $request->bestsell;
         $update_data->status               =     $request->status;
-    	$update_data->save(); 
+    	$update_data->save();
 
     	$productId=$update_data->id;
     	$update_images=Productimage::where('product_id',$productId)->get();
@@ -183,12 +215,12 @@ class ProductController extends Controller
 		        $name =  time().'-'.$image->getClientOriginalName();
 		        $uploadpath = 'public/uploads/product/';
 		        $image->move($uploadpath, $name);
-		        $imageUrl = $uploadpath.$name;	
+		        $imageUrl = $uploadpath.$name;
 
 	             $proimage= new Productimage();
 		         $proimage->product_id = $productId;
 		         $proimage->image=$imageUrl;
-		         $proimage->save(); 
+		         $proimage->save();
 		        }
         }else{
         	foreach($update_images as $update_image){
@@ -199,7 +231,7 @@ class ProductController extends Controller
         }
         $update_data->proSizes()->sync($request->proSize);
         $update_data->proColors()->sync($request->proSize);
-       
+
     	Toastr::success('message', 'Product information update successfully!');
     	return redirect('/editor/product/manage');
      }
@@ -208,14 +240,14 @@ class ProductController extends Controller
 		$Unpublished_data->status 	=	0;
 		$Unpublished_data->save();
 		Toastr::success('message', 'Product unpublished successfully!');
-		return redirect('editor/product/manage');	
+		return redirect('editor/product/manage');
 	}
 	public function active(Request $request){
 		$published_data			=	Product::find($request->hidden_id);
 		$published_data->status 	=	1;
 		$published_data->save();
 		Toastr::success('message', 'Product published successfully!');
-		return redirect('editor/product/manage');	
+		return redirect('editor/product/manage');
 	}
      public function productimgdel($id){
         $delete_img = Productimage::find($id);
@@ -228,7 +260,7 @@ class ProductController extends Controller
 		$delete_data = Product::find($request->hidden_id);
 		$delete_data->delete();
 		Toastr::success('message', 'Product delete successfully!');
-		return redirect('editor/product/manage');	
+		return redirect('editor/product/manage');
 	}
-    
+
 }
