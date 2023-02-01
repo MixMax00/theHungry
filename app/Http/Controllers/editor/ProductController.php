@@ -49,7 +49,6 @@ class ProductController extends Controller
         $this->validate($request,[
             'proCategory'			=>	'required',
             'proName'				=>	'required',
-    		'proPurchaseprice'		=>	'required',
     		'proNewprice'			=>	'required',
     		'image'					=>	'required',
     		'proDescription'		=>	'required',
@@ -66,8 +65,8 @@ class ProductController extends Controller
     	$store_data->proName  			  = 	$request->proName;
     	$store_data->proCode    		  = 	$request->proCode;
     	$store_data->slug  			      = 	strtolower(preg_replace('/\s+/', '-', $request->proName));
-    	//$store_data->proPurchaseprice  	  = 	$request->proPurchaseprice;
-        $store_data->proPurchaseprice  	  = 	$request->proPurchaseprice;
+    	$store_data->proPurchaseprice  	  = 	00.00;
+        $store_data->proPurchaseprice  	  =     00.00;
     	$store_data->proOldprice  		  = 	$request->proOldprice;
     	$store_data->proNewprice  		  = 	$request->proNewprice;
     	$store_data->proDescription       = 	$request->proDescription;

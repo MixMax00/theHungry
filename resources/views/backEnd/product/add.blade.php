@@ -82,7 +82,7 @@
                         </div> -->
                       <!-- /.form-group -->
                       <!-- /.form-group -->
-                        <div class="col-sm-8">
+                        <div class="col-sm-12">
                             <div class="form-group">
                               <label>Product Name <span>*</span></label>
                               <input type="text" name="proName" class="form-control{{ $errors->has('proName') ? ' is-invalid' : '' }}" value="{{ old('proName') }}">
@@ -96,18 +96,7 @@
                         </div>
                       <!-- /.form-group -->
                         <!-- form group end -->
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                              <label>Cost Price <span>*</span></label>
-                              <input type="number" step="any" name="proPurchaseprice" class="form-control{{ $errors->has('proPurchaseprice') ? ' is-invalid' : '' }}" value="{{ old('proPurchaseprice') }}">
 
-                              @if ($errors->has('proPurchaseprice'))
-                              <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('proPurchaseprice') }}</strong>
-                              </span>
-                              @endif
-                            </div>
-                        </div>
                       <!-- /.form-group -->
                         <div class="col-sm-4">
                             <div class="form-group">
@@ -196,6 +185,8 @@
                       @endif
                     </div>
                 </div>
+
+
 
                 <div class="col-sm-8">
                     <div class="row">
@@ -293,57 +284,7 @@
                           @endif
                         </div>
                     </div>
-                  <!-- /.form-group -->
-                  <!-- <div class="col-sm-4">
-                        <div class="form-group">
-                          <label>Deal Date <span>(Optional)</span></label>
-                          <input type="date" name="dealdate" class="form-control{{ $errors->has('dealdate') ? ' is-invalid' : '' }}" value="{{ old('dealdate') }}" min="1">
-
-                          @if ($errors->has('dealdate'))
-                          <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('dealdate') }}</strong>
-                          </span>
-                          @endif
-                        </div>
-                    </div> -->
-                  <!-- /.form-group -->
-
-                  <!-- <div class="col-sm-3">
-                          <div class="form-group">
-                            <label class="custom-label" for="deal"> Deal (Optional)</label>
-                             <input type="checkbox" class="{{ $errors->has('deal') ? ' is-invalid' : '' }}" value="1" name="deal" id="front">
-                             @if ($errors->has('deal'))
-                                <span class="invalid-feedback">
-                                  <strong>{{ $errors->first('deal') }}</strong>
-                                </span>
-                              @endif
-                          </div>
-                        </div> -->
-
-                  <!-- <div class="col-sm-3">
-                          <div class="form-group">
-                            <label class="custom-label" for="fullpaid"> Full Paid (Optional)</label>
-                             <input type="checkbox" class="{{ $errors->has('fullpaid') ? ' is-invalid' : '' }}" value="1" name="fullpaid" id="fullpaid">
-                             @if ($errors->has('fullpaid'))
-                                <span class="invalid-feedback">
-                                  <strong>{{ $errors->first('fullpaid') }}</strong>
-                                </span>
-                              @endif
-                          </div>
-                        </div> -->
-                  <!-- /.form-group -->
-                    <!--  <div class="col-sm-3">
-                        <div class="form-group">
-                          <label class="custom-label" for="feature"> Feature (Optional)</label>
-                           <input type="checkbox" class="{{ $errors->has('feature') ? ' is-invalid' : '' }}" value="1" name="feature" id="front">
-                           @if ($errors->has('feature'))
-                              <span class="invalid-feedback">
-                                <strong>{{ $errors->first('feature') }}</strong>
-                              </span>
-                            @endif
-                        </div>
-                      </div> -->
-                      <div class="col-sm-3">
+                 <div class="col-sm-3">
                           <div class="form-group">
                             <label class="custom-label" for="bestsell"> Top Sell (Optional)</label>
                              <input type="checkbox" class="{{ $errors->has('bestsell') ? ' is-invalid' : '' }}" value="1" id="bestsell" name="bestsell" id="front">

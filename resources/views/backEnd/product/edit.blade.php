@@ -1,5 +1,7 @@
 @extends('backEnd.layouts.master')
 @section('title','Product Add')
+@php($addons = \App\ProductAddon::all())
+@php($sizes = \App\Size::all())
 @section('main_content')
 <section class="content">
   <div class="container-fluid">
@@ -24,7 +26,7 @@
                                 <label for="title">Category <span>*</span></label>
                                 <select class="form-control select2{{ $errors->has('proCategory') ? ' is-invalid' : '' }}" value="{{ old('proCategory') }}" id="proCategory" name="proCategory">
                                     <option value="">====Select your category====</option>
-                                    @foreach($category as $key=>$value) 
+                                    @foreach($category as $key=>$value)
                                     <option value="{{$value->id}}" required>{{$value->name}}</option>
                                     @endforeach
                                 </select>
@@ -86,7 +88,7 @@
                         </div> -->
                       <!-- /.form-group -->
                       <!-- /.form-group -->
-                        <div class="col-sm-8">
+                        <div class="col-sm-12">
                             <div class="form-group">
                               <label>Product Name <span>*</span></label>
                               <input type="text" name="proName" class="form-control{{ $errors->has('proName') ? ' is-invalid' : '' }}" value="{{ $edit_data->proName}}">
@@ -98,20 +100,8 @@
                               @endif
                             </div>
                         </div>
-                      <!-- /.form-group -->
-                      <div class="col-sm-4">
-                            <div class="form-group">
-                              <label>Cost Price <span>*</span></label>
-                              <input type="number" step="any" name="proPurchaseprice" class="form-control{{ $errors->has('proPurchaseprice') ? ' is-invalid' : '' }}" value="{{$edit_data->proPurchaseprice}}">
 
-                              @if ($errors->has('proPurchaseprice'))
-                              <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('proPurchaseprice') }}</strong>
-                              </span>
-                              @endif
-                            </div>
-                        </div>
-                        
+
                         <div class="col-sm-4">
                             <div class="form-group">
                               <label>Old Product (Optional)</label>
@@ -146,7 +136,7 @@
                             <div class="clone hide" style="display: none;">
                               <div class="control-group input-group" >
                                 <input type="file" name="image[]" class="form-control">
-                                <div class="input-group-btn"> 
+                                <div class="input-group-btn">
                                   <button class="btn btn-danger" type="button"><i class="fa fa-trash"></i></button>
                                 </div>
                               </div>
@@ -154,12 +144,12 @@
 
                             <div class="input-group control-group increment" >
                               <input type="file" name="image[]" class="form-control">
-                              <div class="input-group-btn"> 
+                              <div class="input-group-btn">
                                 <button class="btn btn-success" type="button"><i class="fa fa-plus"></i></button>
                               </div>
                             </div>
                             @foreach($productimage as $image)
-                               @if($edit_data->id==$image->product_id) 
+                               @if($edit_data->id==$image->product_id)
                                 <div class="edit-img">
                                   <input type="hidden" class="form-control" value="{{$image->id}}" name="hidden_img">
                                  <img src="{{asset($image->image)}}" class="editimage" alt="">
@@ -202,7 +192,7 @@
                             </div>
                         </div>
                       <!-- /.form-group -->
-                      <div class="col-sm-4">
+                       <div class="col-sm-4">
                             <div class="form-group">
                               <label>Product Code (Optional)</label>
                               <input type="text" name="proCode" class="form-control{{ $errors->has('proCode') ? ' is-invalid' : '' }}" value="{{ $edit_data->proCode}}">
@@ -214,39 +204,58 @@
                               @endif
                             </div>
                         </div>
-                      <!-- /.form-group 
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                        <label for="title">Product size (Optional)</label>
-                            <select name="proSize[]" class="form-control select2{{ $errors->has('proSize') ? ' is-invalid' : '' }}"  multiple="multiple">
-                              @foreach($totalsizes as $totalsize)
-                                  <option value="{{$totalsize->id}}" @foreach($selectsizes as $selectsize) @if($totalsize->id == $selectsize->size_id)selected="selected"@endif @endforeach>{{$totalsize->sizeName}}</option>
-                              @endforeach
-                            </select>
-                            @if ($errors->has('proSize'))
-                              <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('proSize') }}</strong>
-                              </span>
-                              @endif
+
+
+
+
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                      <label>Size <span></span></label>
+                                      <select class="form-control" name="size[]">
+                                        @foreach ($sizes as $size)
+                                            <option value="{{ $size->id }}">{{ $size->sizeName }}</option>
+                                        @endforeach
+
+                                      </select>
+
+                                      @if ($errors->has('unit'))
+                                      <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('unit') }}</strong>
+                                      </span>
+                                      @endif
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input type="text" name="size_price[]" class="form-control{{ $errors->has('proCode') ? ' is-invalid' : '' }}" value="{{ old('proCode') }}">
+
+                                        @if ($errors->has('proCode'))
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('proCode') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group" style="margin-top: 30px;">
+
+                                        <button type="button" class="btn btn-info add"><i class="fa fa-plus"></i></button>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                        <label for="title">Product color (Optional)</label>
-                            <select name="proColor[]" class="form-control select2{{ $errors->has('proColor') ? ' is-invalid' : '' }}"  multiple="multiple">
-                              @foreach($totalcolors as $totalcolor)
-                                  <option value="{{$totalsize->id}}" @foreach($selectcolors as $selectcolor) @if($totalcolor->id == $selectcolor->color_id)selected="selected"@endif @endforeach>{{$totalcolor->colorName}}</option>
-                              @endforeach
-                            </select>
-                            @if ($errors->has('proColor'))
-                              <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('proColor') }}</strong>
-                              </span>
-                              @endif
+
+                        <div class="col-sm-8 addRow">
+
                         </div>
-                      </div>
-                        form group end -->
+
+
+
+
                       <div class="col-sm-12">
                         <div class="form-group ">
                                 <label for="Picture">Short Description <span>*</span></label>
@@ -367,7 +376,7 @@
                                   <li><input type="radio" id="active" class="{{ $errors->has('status') ? ' is-invalid' : '' }}" value="1" name="status">
                                     <label for="active">Active</label>
                                   </li>
-                  
+
                                   <li><input type="radio" id="inactive" class="{{ $errors->has('status') ? ' is-invalid' : '' }}" value="2" name="status">
                                     <label for="inactive">Inactive</label>
                                   </li>
@@ -408,3 +417,76 @@
   </section>
   <!-- /.content -->
 @endsection
+
+
+
+
+@section('js')
+
+<script>
+
+    $(document).ready(function(){
+        $('.add').click(function(e){
+            e.preventDefault();
+
+            $('.addRow').append(`
+
+                <div class="row">
+                    <div class="col-sm-4">
+                            <div class="form-group">
+                              <label>Size <span></span></label>
+                              <select class="form-control" name="size[]">
+                                @foreach ($sizes as $size)
+                                    <option value="{{ $size->id }}">{{ $size->sizeName }}</option>
+                                @endforeach
+
+                              </select>
+
+                              @if ($errors->has('unit'))
+                              <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('unit') }}</strong>
+                              </span>
+                              @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Size Price</label>
+                                <input type="text" name="size_price[]" class="form-control{{ $errors->has('proCode') ? ' is-invalid' : '' }}" value="{{ old('proCode') }}">
+
+                                @if ($errors->has('proCode'))
+                                <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('proCode') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group" style="margin-top: 30px;">
+                                <a href="javascript:void(0);" class="remCF btn btn-info"><i class="fa fa-minus"></i></a>
+
+                            </div>
+                        </div>
+                </div>
+            `);
+
+        });
+
+
+
+
+    });
+
+    $(document).on('click', '.remCF', function(){
+        $('.addRow .row:last').remove();
+    })
+
+
+
+
+
+
+</script>
+
+@endsection
+
